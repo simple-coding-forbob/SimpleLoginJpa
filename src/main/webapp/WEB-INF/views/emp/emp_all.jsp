@@ -11,17 +11,13 @@
 
 </head>
 <body>
-${emps}
-${pages.totalPages} : 총페이지수<br>
-${pages.number} : 현재페이지<br>
-${pages.size} : 화면에보일개수<br>
 <jsp:include page="/common/header.jsp"></jsp:include>
 <div class="page mt3">
-		<form id="listForm" name="listForm" method="get">
+		<form id="listForm" name="listForm" method="get" action="/emp">
 		<!-- 수정페이지 열기때문에 필요 -->
 	    <input type="hidden" id="eno" name="eno">
-	    <!-- 컨트롤러로 보낼 페이지번호 -->
-	    <input type="hidden" id="page" name="page">
+	    <!-- TODO: 컨트롤러로 보낼 페이지번호 -->
+		<input type="hidden" id="page" name="page" value="0">
 	    
 		<div class="input-group mb3 mt3">
 		  <input type="text" 
@@ -29,10 +25,10 @@ ${pages.size} : 화면에보일개수<br>
 		         id="searchKeyword"
 		         name="searchKeyword"
 		         placeholder="사원명입력"
+				 value="${param.searchKeyword}"
 		  >
 		  <button class="btn btn-primary"
-		          type="button" 
-		          onclick="fn_egov_selectList()"
+		          type="submit"
 		  >
 		          검색
 		  </button>
@@ -56,7 +52,7 @@ ${pages.size} : 화면에보일개수<br>
 		  	<c:forEach var="data" items="${emps}">  	
 		  		<tr>
 		  		  <td>
-		  		  	<a href="javascript:fn_select('<c:out value="${data.eno}" />')">
+		  		  	<a href="/emp/edition?eno=${data.eno}">
 			          <c:out value="${data.eno}"></c:out>
 			        </a>
 		  		  </td>
@@ -72,6 +68,9 @@ ${pages.size} : 화면에보일개수<br>
 
 		  </tbody>
 		</table>
+		<c:if test="${empty emps}">
+			데이터가 없습니다.
+		</c:if>
 		<!-- 페이지 번호 태그 -->
 		<ul class="pagination" id="pagination"></ul>
 	</form>
@@ -85,41 +84,18 @@ ${pages.size} : 화면에보일개수<br>
 <script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
 
 <script type="text/javascript">
-	/* 페이지번호 클릭시 전체조회 */
-	function fn_egov_link_page(page) {
-		/* 현재페이지번호 저장 */
-		$("#page").val(page);
-		$("#listForm").attr("action",'<c:out value="/emp" />')
-					.submit();
-	}
-
-    /* 전체조회 */
-	function fn_egov_selectList() {
-		$("#page").val(0);    // 현재페이지: 벡엔드로 보낼때 첫페이지는 0입니다.
-		$("#listForm").attr("action",'<c:out value="/emp" />')
-					.submit();
-	}
-	/* 수정페이지 열기 */
-	function fn_select(eno) {
-		$("#eno").val(eno);        // 사원번호(기본키)
-		/* 수정페이지 URL:/emp/edition */
-		$("#listForm").attr("action",'<c:out value="/emp/edition" />')
-					.submit();
-	}
-</script>
-
-<script type="text/javascript">
-/* 페이징 처리 */
-    $('#pagination').twbsPagination({
-        totalPages: "${pages.totalPages}",
-        startPage:parseInt("${pages.number+1}"),
-        visiblePages: "${pages.size}",
-        initiateStartPageClick: false,
-        onPageClick: function (event, page) {
-            /* 재조회 함수 실행 */
-            fn_egov_link_page(page-1);
-        }
-    });
+	/* 페이징 처리 */
+	$('#pagination').twbsPagination({
+		totalPages: ${pages.totalPages},
+		startPage:${pages.number+1},            // 현재페이지: 화면에 표시할때는 +1 해서 보입니다.
+		visiblePages: ${pages.size},
+		initiateStartPageClick: false,
+		onPageClick: function (event, page) {
+			/* 재조회 */
+			$("#page").val(page-1);
+			$("#listForm").submit();
+		}
+	});
 
 </script>
 

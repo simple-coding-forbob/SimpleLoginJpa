@@ -13,9 +13,10 @@
 <body>
 <jsp:include page="/common/header.jsp"></jsp:include>
 <div class="page mt3">
-	<form id="listForm" name="listForm" method="get">
+	<form id="listForm" name="listForm" method="get" action="/faq">
 	    <input type="hidden" id="fno" name="fno">
-	    <input type="hidden" id="page" name="page">
+		<!-- TODO: 컨트롤러로 보낼 페이지번호 -->
+		<input type="hidden" id="page" name="page" value="0">
 	    
 		<div class="input-group mb3 mt3">
 		  <input type="text" 
@@ -23,10 +24,10 @@
 		         id="searchKeyword"
 		         name="searchKeyword"
 		         placeholder="제목입력"
+				 value="${param.searchKeyword}"
 		  >
 		  <button class="btn btn-primary" 
-		          type="button" 
-		          onclick="fn_egov_selectList()"
+		          type="submit"
 		  >
 		          검색
 		  </button>
@@ -44,7 +45,7 @@
 		   <c:forEach var="data" items="${faqs}">
 	 		    <tr>
 			      <td>
-			      	<a href="javascript:fn_select('<c:out value="${data.fno}" />')">
+			      	<a href="/faq/edition?fno=${data.fno}">
 			      		<c:out value="${data.fno}" />
 			      	</a>
 			      </td>
@@ -55,7 +56,9 @@
 
 		  </tbody>
 		</table>
-	
+		<c:if test="${empty faqs}">
+			데이터가 없습니다.
+		</c:if>
 		<div id="paging" class="flex-center">
 		    <ul class="pagination" id="pagination"></ul>
 		</div>
@@ -71,34 +74,17 @@
 <!-- 페이징 라이브러리 -->
 <script src="/js/jquery.twbsPagination.js" type="text/javascript"></script>
 
-	<script type="text/javascript" defer="defer">
-		function fn_egov_link_page(pageNo) {
-			$("#page").val(pageNo);
-			$("#listForm").attr("action",'<c:out value="/faq" />')
-						.submit();
-		}
-		function fn_egov_selectList() {
-			$("#page").val(0);
-			$("#listForm").attr("action",'<c:out value="/faq" />')
-						.submit();
-		}
-		function fn_select(fno) {
-			$("#fno").val(fno); 
-			$("#listForm").attr("action",'<c:out value="/faq/edition" />')
-						.submit();
-		}
-	</script>
-	
 <script type="text/javascript">
 	/* 페이징 처리 */
 	$('#pagination').twbsPagination({
-		totalPages: "${pages.totalPages}",
-		startPage:parseInt("${pages.number+1}"), // 현재페이지: 화면에 표시할때는 +1 해서 보입니다.
-		visiblePages: "${pages.size}",
+		totalPages: ${pages.totalPages},
+		startPage:${pages.number+1},            // 현재페이지: 화면에 표시할때는 +1 해서 보입니다.
+		visiblePages: ${pages.size},
 		initiateStartPageClick: false,
 		onPageClick: function (event, page) {
-			/* 재조회 함수 실행 */
-			fn_egov_link_page(page-1);           // 현재페이지: 벡엔드로 보낼때는 -1 해서 보냅니다.
+			/* 재조회 */
+			$("#page").val(page-1);
+			$("#listForm").submit();
 		}
 	});
 </script>

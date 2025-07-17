@@ -12,27 +12,25 @@
 
 </head>
 <body>
-${pages.totalPages} : 총페이지수<br>
-${pages.number} : 현재페이지<br>
-${pages.size} : 화면에보일개수<br>
 	<jsp:include page="/common/header.jsp" />
 	<form class="page mt3" id="listForm" name="listForm" method="get">
 		<%-- TODO: csrf 인증 토큰(중요): 안하면 로그인페이지로 redirect 됨 --%>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 		<!-- 수정페이지 열기때문에 필요 -->
 	    <input type="hidden" id="uuid" name="uuid">
-	    <!-- 컨트롤러로 보낼 페이지번호 -->
-	    <input type="hidden" id="page" name="page">
+		<!-- TODO: 컨트롤러로 보낼 페이지번호 -->
+		<input type="hidden" id="page" name="page" value="0">
 		<div class="input-group mb3 mt3">
 			<input type="text" 
 			       class="form-control"
 			       id="searchKeyword"
-		           name="searchKeyword" 
+		           name="searchKeyword"
+				   value="${param.searchKeyword}"
 				placeholder="검색어입력"
 				>
 			<button class="btn btn-primary" 
 			        type="button"
-			        onclick="fn_egov_selectList()"
+			        onclick="fn_egov_selectList(0)"
 			        >검색</button>
 		</div>
 		<!-- 카드 디자인: 반복문 -->
@@ -50,6 +48,9 @@ ${pages.size} : 화면에보일개수<br>
 				</div>
 		   </div>
 		</c:forEach>
+		<c:if test="${empty gallerys}">
+			데이터가 없습니다.
+		</c:if>
 		<!-- 여기: 페이지번호 -->
 		<div class="flex-center clear">
 			<ul class="pagination" id="pagination"></ul>
@@ -64,38 +65,32 @@ ${pages.size} : 화면에보일개수<br>
 
 
 <script type="text/javascript">
-	/* 페이지번호 클릭시 전체조회 */
-	function fn_egov_link_page(page) {
-		/* 현재페이지번호 저장 */
-		$("#page").val(page);
-		$("#listForm").attr("action",'<c:out value="/gallery" />')
-					.submit();
-	}
 	/* 전체조회 */
-	function fn_egov_selectList() {
-		 $("#page").val(0);    // 현재페이지: 벡엔드로 보낼때 첫페이지는 0입니다.
-		$("#listForm").attr("action",'<c:out value="/gallery" />')
+	function fn_egov_selectList(page) {
+		 $("#page").val(page);    // 현재페이지: 벡엔드로 보낼때 첫페이지는 0입니다.
+		$("#listForm").attr("action",'/gallery')
 					.submit();
 	}
     /* 삭제: /gallery/delete */
     function fn_delete(uuid) {
         /* 전체조회: method="get" -> "post" 변경해서 전달 */
         $("#uuid").val(uuid);
-        $("#listForm").attr("action",'<c:out value="/gallery/delete" />')
+        $("#listForm").attr("action",'/gallery/delete')
                       .attr("method","post")
         .submit();
     }
 </script>
 
 <script type="text/javascript">
+	/* 페이징 처리 */
 	$('#pagination').twbsPagination({
-		totalPages: "${pages.totalPages}",
-		startPage:parseInt("${pages.number+1}"), // 현재페이지: 화면에 표시할때는 +1 해서 보입니다.
-		visiblePages: "${pages.size}",
+		totalPages: ${pages.totalPages},
+		startPage:${pages.number+1},            // 현재페이지: 화면에 표시할때는 +1 해서 보입니다.
+		visiblePages: ${pages.size},
 		initiateStartPageClick: false,
 		onPageClick: function (event, page) {
 			/* 재조회 함수 실행 */
-			fn_egov_link_page(page-1);           // 현재페이지: 벡엔드로 보낼때는 -1 해서 보냅니다.
+			fn_egov_selectList(page-1);           // 현재페이지: 벡엔드로 보낼때는 -1 해서 보냅니다.
 		}
 	});
 </script>

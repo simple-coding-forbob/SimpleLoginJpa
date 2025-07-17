@@ -9,7 +9,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<!-- 	개발자 css -->
 	<link rel="stylesheet" href="/css/style.css">
-    
+
 </head>
 <body>
 <jsp:include page="/common/header.jsp"/>
@@ -33,15 +33,17 @@
                    class="form-control"
                    id="loc"
             	   name="loc"
-            	   value="<c:out value='${dept.loc}' />"              
+            	   value="<c:out value='${dept.loc}' />"
                    placeholder="loc" />
         </div>
         <div class="mb3">
-            <button class="btn btn-warning"
+            <button type="button"
+                    class="btn btn-warning"
             		onclick="fn_save()"
             >수정</button>
-                        
-            <button class="btn btn-danger"
+
+            <button type="button"
+                    class="btn btn-danger"
             		onclick="fn_delete()"
             >삭제</button>
         </div>
@@ -57,13 +59,12 @@
 
 <script type="text/javascript">
 	function fn_save() {
-		/* 저장 함수: 저장 URL(/dept/edit) */
-		$("#addForm").attr("action",'<c:out value="/dept/edit" />')
-		.submit();		
+		$("#addForm").attr("action",'/dept/edit')
+		.submit();
 	}
-	/* 삭제: /dept/delete */
+
 	function fn_delete() {
-		$("#addForm").attr("action",'<c:out value="/dept/delete" />')
+		$("#addForm").attr("action",'/dept/delete')
 		.submit();
 	}
 </script>

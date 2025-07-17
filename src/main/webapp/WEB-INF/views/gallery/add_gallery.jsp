@@ -18,6 +18,7 @@
 			name="addForm"
           method="post"
           enctype="multipart/form-data"
+		  action="/gallery/add"
 	>
 		<%-- TODO: csrf 인증 토큰(중요): 안하면 로그인페이지로 redirect 됨 --%>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -36,8 +37,7 @@
             	 name="image"
 		         >
 		  <button class="btn btn-primary" 
-		          type="button"
-		          onclick="fn_save()"
+		          type="submit"
 		          >저장</button>
 		</div>
     </form>
@@ -51,13 +51,6 @@
 <script src="/js/gallery/gallery-validation-config.js"></script>
 
 
-<script type="text/javascript">
-	function fn_save() {
-		/* 저장 함수: 저장 URL(/gallery/add) */
-		$("#addForm").attr("action",'<c:out value="/gallery/add" />')
-		.submit();
-	}
-</script>
 <jsp:include page="/common/footer.jsp"/>
 </body>
 </html>
