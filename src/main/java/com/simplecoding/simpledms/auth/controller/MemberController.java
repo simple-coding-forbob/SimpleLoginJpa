@@ -38,4 +38,18 @@ public class MemberController {
         return "auth/register";
     }
 
+    //	회원가입(권한등록) 페이지 열기
+    @GetMapping("/admin/register")
+    public String registerAdminView() {
+        return "auth/register_admin";
+    }
+
+    //    회원 가입 함수(insert)
+    @PostMapping("/admin/register/addition")
+    public String registerAdmin(Model model, @ModelAttribute MemberDto memberDto) {
+        memberService.save(memberDto);
+        //		성공메세지 JSP 전달
+        model.addAttribute("msg", "회원 가입을 성공했습니다.");
+        return "auth/register_admin";
+    }
 }
