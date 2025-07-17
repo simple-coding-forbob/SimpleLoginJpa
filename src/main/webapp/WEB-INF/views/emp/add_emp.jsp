@@ -15,7 +15,7 @@
 <body>
 <jsp:include page="/common/header.jsp"/>
 <div class="page mt3">
-	<form id="addForm" name="addForm" method="post">
+	<form id="addForm" name="addForm" method="post" action="/emp/add">
         <%-- TODO: csrf 인증 토큰(중요): 안하면 로그인페이지로 redirect 됨 --%>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="mb3">
@@ -75,9 +75,7 @@
                    placeholder="dno" />
         </div>
         <div class="mb3">
-            <button class="btn btn-primary"
-            		onclick="fn_save()"
-            >저장</button>
+            <button type="submit" class="btn btn-primary">저장</button>
         </div>
     </form>
 </div>
@@ -88,15 +86,6 @@
 <!-- 유효성체크 플러그인 -->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>
 <script src="/js/emp/emp-validation-config.js"></script>
-
-
-<script type="text/javascript">
-	function fn_save() {
-		/* 저장 함수: 저장 URL(/emp/add) */
- 		$("#addForm").attr("action",'<c:out value="/emp/add" />')
-		.submit();		
-	}
-</script>
 
 <jsp:include page="/common/footer.jsp"/>
 </body>
