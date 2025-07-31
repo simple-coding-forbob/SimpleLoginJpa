@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"      uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form"   uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
@@ -15,7 +14,7 @@
 <body>
 <jsp:include page="/common/header.jsp"/>
 <div class="page mt3">
-	<form id="addForm" name="addForm" method="post" action="/faq/add">
+	<form id="addForm" name="addForm" method="post">
         <%-- TODO: csrf 인증 토큰(중요): 안하면 로그인페이지로 redirect 됨 --%>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <div class="mb3">
@@ -35,7 +34,7 @@
                    placeholder="content" />
         </div>
         <div class="mb3">
-            <button type="submit" class="btn btn-primary">저장</button>
+            <button type="button" class="btn btn-primary" onclick="fn_save()">저장</button>
         </div>
     </form>
 </div>
@@ -46,6 +45,14 @@
 <!-- 유효성체크 라이브러리 -->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>
 <script src="/js/faq/faq-validation-config.js"></script>
+
+<script type="text/javascript">
+    function fn_save() {
+        /* 저장 함수: 저장 URL(/emp/add) */
+        $("#addForm").attr("action","/faq/add")
+            .submit();
+    }
+</script>
 
 <jsp:include page="/common/footer.jsp"/>
 </body>
