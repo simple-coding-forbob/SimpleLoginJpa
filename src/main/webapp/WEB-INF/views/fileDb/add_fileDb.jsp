@@ -21,7 +21,6 @@
 	      name="addForm"
 	      method="post"
 	      enctype="multipart/form-data"
-		  action="/fileDb/add"
 	      >
 		<%-- TODO: csrf 인증 토큰(중요): 안하면 로그인페이지로 redirect 됨 --%>
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -61,6 +60,14 @@
 <!-- 유효성체크 플러그인 -->
 <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>
 <script src="/js/fileDb/fileDb-validation-config.js"></script>
+
+<script type="text/javascript">
+	function fn_save() {
+		/* 저장 함수: 저장 URL(/emp/add) */
+		$("#addForm").attr("action","/fileDb/add")
+				.submit();
+	}
+</script>
 
 <jsp:include page="/common/footer.jsp"/>
 </body>
