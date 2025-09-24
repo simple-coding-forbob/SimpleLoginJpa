@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-		<img src="<c:url value='/images/simple-coding.png'/>" width="20" height="20" alt="로고" />
+		<img src="<c:url value='/images/simple-coding.png'/>" width="20" height="20" />
     	simple-coding 
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,35 +66,28 @@
       <ul class="navbar-nav">
         <!-- {/* TODO: 로그인 시작 */} -->
         <!-- memberVO 가 세션에 없으면 메뉴을 보이고, 있으면 안보임 -->
-        <sec:authorize access="hasAuthority('ROLE_ADMIN')">
+
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/admin/register">회원가입(권한등록)</a>
           </li>
-        </sec:authorize>
 
-        <sec:authorize access="isAnonymous()">
         	<li class="nav-item">
 	          <a class="nav-link active" href="/auth/register"> 회원가입 </a>
 	        </li>
 	        <li class="nav-item">
 	           <a class="nav-link active" href="/auth/login"> 로그인 </a>
 	        </li>
-        </sec:authorize>
 
         <!-- {/* 로그인 끝 */} -->
 
         <!-- {/* 로그아웃 시작 */} -->
         <!-- memberVO 가 세션에 있으면 메뉴을 보이고, 없으면 안보임 -->
-        <sec:authorize access="isAuthenticated()">
 	         <li class="nav-item">
                <form action="/auth/logout" method="post">
                  <button type="submit" class="btn">Logout</button>
-                   <%--  TODO: csrf 보안 토큰 : 해킹 방지 토큰 --%>
-                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                </form>
 	           </a>
 	         </li>
-        </sec:authorize>
         <!-- {/* 로그아웃 끝 */} -->
       </ul>
     </div>
