@@ -1,10 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<html lang="kr">
+<html>
 <head>
 <title>로그인 페이지</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="로그인 페이지입니다.">
 	<!-- 	부트스트랩 css  -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 	<!-- 	개발자 css -->
@@ -27,22 +26,14 @@
 							<div class="tcenter">
 								<h3 class="mb4">Welcome Back!</h3>
 							</div>
-							<form id="addForm" name="addForm"
-								action="/auth/loginProcess"
-								method="post">
-								<%-- TODO: csrf 인증 토큰(중요): 안하면 로그인페이지로 redirect 됨 --%>
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+							<form id="addForm" name="addForm">
 								<div class="form-group">
 									<input type="text" class="form-control mb3"
-            		                       id="email"
-            		                       name="email"
 										placeholder="이메일을 넣기"  />
 								</div>
 								<div class="form-group">
 									<input type="password"
 										class="form-control mb3"
-            		                    id="password"
-            		                    name="password"										
 										placeholder="패스워드 넣기"  />
 								</div>
 
@@ -63,9 +54,6 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <!-- 부트스트랩 js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-<!-- 유효성체크 플러그인 -->
-<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.21.0/dist/jquery.validate.min.js"></script>
-<script src="/js/auth/login-validation-config.js"></script>
 
 <jsp:include page="/common/footer.jsp" />
 </body>
